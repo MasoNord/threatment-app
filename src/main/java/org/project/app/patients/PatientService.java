@@ -1,10 +1,11 @@
 package org.project.app.patients;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.app.modules.HealthProblem;
 import org.project.app.patients.entities.Patient;
+import org.project.app.util.ValidateData;
 import spark.Request;
 
 import java.io.IOException;
@@ -18,21 +19,25 @@ public class PatientService {
 
     public Patient create(Request request) throws IOException {
         JsonNode node = m.readTree(request.body());
+        ValidateData v = new ValidateData(node.get("dob").asText(), node.get("sex").asText(), node.get("hp").get("degree").asInt());
         HealthProblem hp;
         Patient patient;
 
+        if (!v.validate())
+            return null;
+
         try {
             hp = HealthProblem.builder()
-                    .name(node.get("hp").get("name").toString())
+                    .name(node.get("hp").get("name").asText())
                     .degree(Integer.parseInt(node.get("hp").get("degree").toString()))
                     .build();
 
             patient = Patient.builder()
                     .id(UUID.randomUUID().toString())
-                    .dob(node.get("dob").toString())
-                    .sex(node.get("sex").toString())
+                    .dob(node.get("dob").asText())
+                    .sex(node.get("sex").asText())
                     .hp(hp)
-                    .name(node.get("name").toString())
+                    .name(node.get("name").asText())
                     .dc(LocalDate.now().toString())
                     .du(LocalDate.now().toString())
                     .build();
@@ -44,7 +49,6 @@ public class PatientService {
         return patient;
     }
     public ArrayList<Patient> getAll() {
-
         return this.patients;
     }
     public Patient getByID(String id) {
@@ -67,16 +71,16 @@ public class PatientService {
 
         if (node.get("hp") != null) {
              hp = HealthProblem.builder()
-                    .name((node.get("hp").get("name") != null) ? node.get("hp").get("name").toString() : p.getHp().getName())
-                    .degree((node.get("hp").get("degree") != null) ? Integer.parseInt(node.get("hp").get("degree").toString()) : p.getHp().getDegree())
+                    .name((node.get("hp").get("name") != null) ? node.get("hp").get("name").asText() : p.getHp().getName())
+                    .degree((node.get("hp").get("degree") != null) ? node.get("hp").get("degree").asInt() : p.getHp().getDegree())
                     .build();
         }
 
         Patient updatedPatient = Patient.builder()
-                .sex((node.get("sex") != null) ? node.get("sex").toString() : p.getSex())
-                .dob((node.get("dob")!= null) ? node.get("dob").toString() : p.getDob())
+                .sex((node.get("sex") != null) ? node.get("sex").asText() : p.getSex())
+                .dob((node.get("dob")!= null) ? node.get("dob").asText() : p.getDob())
                 .hp(hp)
-                .name((node.get("name") != null) ? node.get("name").toString(): p.getName())
+                .name((node.get("name") != null) ? node.get("name").asText(): p.getName())
                 .du(LocalDate.now().toString())
                 .id(p.getId())
                 .dc(p.getDc())
