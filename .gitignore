@@ -3,3 +3,6 @@ target
 out
 META-INF
 /META-INF/
+create_db.log
+create_db_error.log
+.env
