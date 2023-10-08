@@ -22,13 +22,13 @@ interface PatientInterface {
 public class Patient implements PatientInterface{
     String id;
 
-    @JsonRawValue
+//    @JsonRawValue
     String name;
 
-    @JsonRawValue
+//    @JsonRawValue
     String dob;
 
-    @JsonRawValue
+//    @JsonRawValue
     String sex;
 
     HealthProblem hp;
