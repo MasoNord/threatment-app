@@ -8,9 +8,8 @@ import java.sql.SQLException;
 
 public class CreateConnection {
     private final Configuration config = new Configuration();
-
+    private static Connection conn = null;
     public Connection connect() {
-        Connection conn = null;
         try {
             conn = DriverManager.getConnection(config.getDb_url(), config.getDb_user(), config.getDb_password());
             System.out.println("Connected to the db");
@@ -21,5 +20,8 @@ public class CreateConnection {
         return conn;
     }
 
+    public Connection getConnection(){
+        return conn;
+    }
 
 }

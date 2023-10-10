@@ -15,7 +15,7 @@ public class InitializeDB {
         } catch (FileNotFoundException e) {
             System.out.println(e);
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Db has already been initialized");
         }
     }
 }

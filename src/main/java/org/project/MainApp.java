@@ -36,3 +36,8 @@ public class MainApp {
 
     }
 }
+
+//TODO Do something with message about relation existence
+//TODO add creating and updating data with hours minutes and seconds
+//TODO add tests for patient endpoint
+//TODO add healthproblem endpoint to fetch top 10 most vulnerable patients

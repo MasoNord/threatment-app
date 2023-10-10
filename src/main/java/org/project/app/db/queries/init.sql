@@ -1,16 +1,15 @@
 create table Patients(
             id UUID PRIMARY KEY,
-            name char(50) NOT NULL,
-            dob char(11) NOT NULL,
+            name varchar(50) NOT NULL,
+            dob char(10) NOT NULL,
             sex char(1) NOT NULL,
-            dc char(11) NOT NULL,
-            du char(11) NOT NULL
+            dc char(10) NOT NULL,
+            du char(10) NOT NULL
            );
 create table HealthProblems (
-            name char(50) NOT NULL,
+            diseaseName varchar(50) NOT NULL,
             degree int NOT NULL,
             ownerId UUID NOT NULL,
-            PRIMARY KEY(name),
             FOREIGN KEY (ownerId) REFERENCES Patients
             );
 insert into Patients(id, name, dob, sex, dc, du)
@@ -22,7 +21,7 @@ insert into Patients(id, name, dob, sex, dc, du)
 			'18.03.2022','18.03.2022'
 			);
 
-insert into HealthProblems(name, degree, ownerId)
+insert into HealthProblems(diseaseName, degree, ownerId)
             values (
 		    'Stroke',
 	        1,

@@ -2,6 +2,7 @@ package org.project.app.patients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.project.app.modules.StatusCode;
+import org.project.app.patients.entities.Patient;
 import org.project.app.util.ValidUUID;
 import spark.Request;
 import spark.Response;
@@ -9,9 +10,9 @@ import spark.Response;
 import java.io.IOException;
 
 public class PatientController{
-    ObjectMapper m = new ObjectMapper();
-    PatientService patientService = new PatientService();
-    ValidUUID validUUID = new ValidUUID();
+    private final ObjectMapper m = new ObjectMapper();
+    private final PatientService patientService = new PatientService();
+    private final ValidUUID validUUID = new ValidUUID();
 
     public String Greeting(Request request, Response response, String message) {
         response.status(200);
@@ -19,13 +20,15 @@ public class PatientController{
     }
 
     public String create(Request request, Response response) throws IOException {
-        if (patientService.create(request) == null) {
+        Patient patient = patientService.create(request);
+
+        if (patient == null) {
             response.status(StatusCode.BAD_REQUEST.getCode());
             return m.writeValueAsString("Has been received not all required fields");
         }
 
         response.status(StatusCode.CREATED.getCode());
-        return m.writeValueAsString(patientService.create(request));
+        return m.writeValueAsString(patient);
     }
 
     public String getAll(Request request, Response response) throws IOException {
@@ -37,43 +40,52 @@ public class PatientController{
     }
 
     public String getById(Request request, Response response) throws IOException {
+        Patient patient = patientService.getByID(request.params(":id"));
         if (!validUUID.validate(request.params(":id"))) {
             response.status(StatusCode.BAD_REQUEST.getCode());
             return m.writeValueAsString("Id is not a uuid format");
         }
 
-        if (patientService.getByID(request.params(":id")) == null) {
+        if (patient == null) {
             response.status(StatusCode.NOT_FOUND.getCode());
             return m.writeValueAsString("Patient's record was not found");
         }
 
         response.status(StatusCode.OK.getCode());
-        return m.writeValueAsString(patientService.getByID(request.params(":id")));
+        return m.writeValueAsString(patient);
     }
 
     public String update(Request request, Response response) throws IOException {
-
-        if (!validUUID.validate(request.params(":id"))) {
+        Patient patient = this.patientService.getByID(request.params(":id"));
+        Patient updatedPatient = this.patientService.update(request, request.params(":id"));
+        if (!this.validUUID.validate(request.params(":id"))) {
             response.status(StatusCode.BAD_REQUEST.getCode());
             return m.writeValueAsString("Id is not a uuid format");
         }
 
-        if (patientService.getByID(request.params(":id")) == null) {
+        if (patient == null) {
             response.status(StatusCode.NOT_FOUND.getCode());
             return m.writeValueAsString("Patient's record was not found");
         }
 
+        if(updatedPatient == null) {
+            response.status(StatusCode.NOT_FOUND.getCode());
+            return m.writeValueAsString("Has been received wrong data types");
+        }
+
         response.status(StatusCode.OK.getCode());
-        return m.writeValueAsString(patientService.update(request, request.params(":id")));
+        return m.writeValueAsString(updatedPatient);
     }
 
     public String delete(Request request, Response response) throws IOException {
+        Patient patient = patientService.getByID(request.params(":id"));
+
         if (!validUUID.validate(request.params(":id"))) {
             response.status(StatusCode.BAD_REQUEST.getCode());
             return m.writeValueAsString("Id is not a uuid format");
         }
 
-        if (patientService.getByID(request.params(":id")) == null) {
+        if (patient == null) {
             response.status(StatusCode.NOT_FOUND.getCode());
             return m.writeValueAsString("Patient's record was not found");
         }
