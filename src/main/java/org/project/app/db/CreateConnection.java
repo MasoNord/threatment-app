@@ -19,9 +19,7 @@ public class CreateConnection {
 
         return conn;
     }
-
     public Connection getConnection(){
         return conn;
     }
-
 }

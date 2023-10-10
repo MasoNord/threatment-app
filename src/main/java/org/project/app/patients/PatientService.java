@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.*;
 import java.time.LocalDate;
 
@@ -21,10 +22,11 @@ public class PatientService {
     private final ArrayList<Patient> patients = new ArrayList<Patient>();
     private final ObjectMapper m = new ObjectMapper();
     private final CreateConnection createConnection = new CreateConnection();
-
+    private final Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
     public Patient create(Request request) throws IOException {
         JsonNode node = m.readTree(request.body());
+
         ValidateData v = new ValidateData(node.get("dob").asText(), node.get("sex").asText(), node.get("hp").get("degree").asInt());
         Patient patient = null;
         if (!v.validate())
@@ -43,8 +45,8 @@ public class PatientService {
                     .sex(node.get("sex").asText())
                     .hp(hp)
                     .name(node.get("name").asText())
-                    .dc(LocalDate.now().toString())
-                    .du(LocalDate.now().toString())
+                    .dc(currentTimestamp.toString())
+                    .du(currentTimestamp.toString())
                     .build();
 
             st.execute("INSERT INTO patients(id, dob, sex, name, dc, du) VALUES ( " +
@@ -143,7 +145,7 @@ public class PatientService {
                 .dob((node.get("dob")!= null) ? node.get("dob").asText() : p.getDob())
                 .hp(hp)
                 .name((node.get("name") != null) ? node.get("name").asText(): p.getName())
-                .du(LocalDate.now().toString())
+                .du(currentTimestamp.toString())
                 .id(p.getId())
                 .dc(p.getDc())
                 .build();
