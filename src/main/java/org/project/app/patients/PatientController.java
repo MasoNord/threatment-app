@@ -15,11 +15,13 @@ public class PatientController{
     private final ValidUUID validUUID = new ValidUUID();
 
     public String Greeting(Request request, Response response, String message) {
+        response.type("application/json");
         response.status(200);
         return message;
     }
 
     public String create(Request request, Response response) throws IOException {
+        response.type("application/json");
         Patient patient = patientService.create(request);
 
         if (patient == null) {
@@ -32,6 +34,8 @@ public class PatientController{
     }
 
     public String getAll(Request request, Response response) throws IOException {
+        response.type("application/json");
+
         if (patientService.getAll().isEmpty())
             response.status(StatusCode.NO_CONTENT.getCode());
 
@@ -40,6 +44,8 @@ public class PatientController{
     }
 
     public String getById(Request request, Response response) throws IOException {
+        response.type("application/json");
+
         Patient patient = patientService.getByID(request.params(":id"));
         if (!validUUID.validate(request.params(":id"))) {
             response.status(StatusCode.BAD_REQUEST.getCode());
@@ -56,20 +62,24 @@ public class PatientController{
     }
 
     public String update(Request request, Response response) throws IOException {
-        Patient patient = this.patientService.getByID(request.params(":id"));
-        Patient updatedPatient = this.patientService.update(request, request.params(":id"));
+        response.type("application/json");
+
         if (!this.validUUID.validate(request.params(":id"))) {
             response.status(StatusCode.BAD_REQUEST.getCode());
             return m.writeValueAsString("Id is not a uuid format");
         }
+
+        Patient patient = this.patientService.getByID(request.params(":id"));
 
         if (patient == null) {
             response.status(StatusCode.NOT_FOUND.getCode());
             return m.writeValueAsString("Patient's record was not found");
         }
 
+        Patient updatedPatient = this.patientService.update(request, request.params(":id"));
+
         if(updatedPatient == null) {
-            response.status(StatusCode.NOT_FOUND.getCode());
+            response.status(StatusCode.BAD_REQUEST.getCode());
             return m.writeValueAsString("Has been received wrong data types");
         }
 
@@ -78,6 +88,7 @@ public class PatientController{
     }
 
     public String delete(Request request, Response response) throws IOException {
+        response.type("application/json");
         Patient patient = patientService.getByID(request.params(":id"));
 
         if (!validUUID.validate(request.params(":id"))) {

@@ -18,23 +18,21 @@ public class MainApp {
         port(config.getApp_port());
         initDb.RunScript(createConnection.connect());
 
-        get("/api", (request, response) -> {
+        get("/api", "application/json", (request, response) -> {
             return MainApp.PATIENT_CONTROLLER.Greeting(request, response, message);
         });
 
-        get("/api/patient", MainApp.PATIENT_CONTROLLER::getAll);
+        get("/api/patient", "application/json", MainApp.PATIENT_CONTROLLER::getAll);
 
-        get("/api/patient/:id", MainApp.PATIENT_CONTROLLER::getById);
+        get("/api/patient/:id", "application/json", MainApp.PATIENT_CONTROLLER::getById);
 
-        post("/api/patient", MainApp.PATIENT_CONTROLLER::create);
+        post("/api/patient", "application/json", MainApp.PATIENT_CONTROLLER::create);
 
-        put("/api/patient/:id", MainApp.PATIENT_CONTROLLER::update);
+        put("/api/patient/:id", "application/json", MainApp.PATIENT_CONTROLLER::update);
 
-        delete("/api/patient/:id", MainApp.PATIENT_CONTROLLER::delete);
+        delete("/api/patient/:id", "application/json", MainApp.PATIENT_CONTROLLER::delete);
 
         System.out.println("Server is listening on port " + config.getApp_port());
 
     }
 }
-
-//TODO add tests for patient endpoint

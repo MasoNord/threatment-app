@@ -58,7 +58,6 @@ public class PatientService {
                     "'" + patient.getDu()+ "'"+
                     ")");
 
-
             st.execute("INSERT INTO HealthProblems(diseaseName, degree, ownerId) VALUES (" +
                     "'" +hp.getName()+ "'" + "," +
                     "'" +hp.getDegree()+ "'" + "," +
@@ -154,6 +153,7 @@ public class PatientService {
 
         if (!v.validate())
             return null;
+
         try {
             Statement st = this.createConnection.getConnection().createStatement();
             st.execute("UPDATE patients SET " +
