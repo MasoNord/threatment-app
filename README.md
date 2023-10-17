@@ -19,6 +19,7 @@ perform 4 basic action: add, create, change and delete.
 * Jackson
 * Junit
 * PostgreSQL
+* PostgreSQL JDBC Driver
 * [java-dotenv](https://github.com/cdimascio/java-dotenv)
 * [ScriptRunner](https://mybatis.org/mybatis-3/jacoco/org.apache.ibatis.jdbc/ScriptRunner.java.html)
 
