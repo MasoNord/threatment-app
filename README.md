@@ -1,17 +1,17 @@
 # CRUD API for treatment app
 
-## Table of content:
+## 📑 Table of content:
 1. [About this Project](#about-this-project)
 2. [Requirements](#requirements)
 3. [How to install](#how-to-install)
 4. [Usage](#usage)
 5. [Contributing](#contributing)
 
-## About this Project
+## 📚 About this Project
 A very basic implementation of CRUD API for treatment app, where you have a patient with curtain disease and you can 
 perform 4 basic action: add, create, change and delete.
 
-## Requirements
+## ⚙️ Requirements
 * Java 8 or later
 * Lombok
 * Vavr
@@ -23,7 +23,7 @@ perform 4 basic action: add, create, change and delete.
 * [java-dotenv](https://github.com/cdimascio/java-dotenv)
 * [ScriptRunner](https://mybatis.org/mybatis-3/jacoco/org.apache.ibatis.jdbc/ScriptRunner.java.html)
 
-## How To Install
+## 🗺️ How To Install
 1. Clone repository from gitHub:
     ~~~
    https://github.com/MasoNord/backend-for-threatment-app.git
@@ -126,5 +126,5 @@ perform 4 basic action: add, create, change and delete.
     500 - Internal Server Error
    ~~~
 
-# Contributing
+# 😺 Contributing
 If you inspired by project and have an interest to make this better with new ideas, your pull request is very welcomed :)
